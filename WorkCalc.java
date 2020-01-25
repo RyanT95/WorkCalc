@@ -10,13 +10,6 @@ import java.lang.Float;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
-import javax.swing.Timer;
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.text.SimpleDateFormat;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 // *******************************************************
 // Program to calculate what time you need to leave work 
 // based on starting time and length of lunch break.
