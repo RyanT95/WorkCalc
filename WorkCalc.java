@@ -88,14 +88,13 @@ public class WorkCalc
 				
 		Scanner input = new Scanner(System.in);		// Open user input
 		
-		final int SHIFT_LENGTH = 480; 				// Length of shift in minutes minus break
+		final int SHIFT_LENGTH = 420; 				// Length of shift in minutes minus break
 		String startTime = "00:00";					// Time started work
 		int breakLength = 0;						// Length of lunch break
-		int numTries = 0;							// Number of unsuccessful attempts at inputting values
 		boolean tryAgain = true;					// Did the user make a bad input?
 	
-		// 
-		while (startingTimeMins(startTime) == 0)
+		// If method returns 0, an invalid input has been given
+		while (timeInMins(startTime) == 0)
 		{	
 			try
 			{
@@ -128,7 +127,7 @@ public class WorkCalc
 			}
 			
 			// If input is good, set boolean to break out of loop
-			if (startingTimeMins(startTime) > 0)							
+			if (timeInMins(startTime) > 0)							
 			{
 				tryAgain = false;
 				continue;
@@ -144,7 +143,7 @@ public class WorkCalc
 
 		}
 	
-		float outTimeMinutes = startingTimeMins(startTime) + SHIFT_LENGTH + breakLength;    // Calculate time to leave in minutes
+		float outTimeMinutes = timeInMins(startTime) + SHIFT_LENGTH + breakLength;    // Calculate time to leave in minutes
 	
 		// Print time user should leave work in hours and minutes (00:00)
 		System.out.println("\n-----------------------------------------\n"
@@ -189,12 +188,13 @@ public class WorkCalc
 						+ "\n-----------------------------------------");
 						
 		// TODO: Calculate time spent working during the day (minus break)
+		
 	}
 	
     // *************************************************
     // Converts time from Hrs & Mins (00:00) to minutes
     // *************************************************
-    public int startingTimeMins(String inTime)
+    public int timeInMins(String inTime)
     {
         int inTimeMinutes;
 
@@ -290,7 +290,7 @@ public class WorkCalc
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");                                       // Format the time object to HH:mm
         LocalDateTime now = LocalDateTime.now();  															// Current time
 
-        float result = (startingTimeMins(outTime) - startingTimeMins(String.valueOf(dtf.format(now))));		// Input time minus current time
+        float result = (timeInMins(outTime) - timeInMins(String.valueOf(dtf.format(now))));		// Input time minus current time
 
         if (result <= 0) // If the leaving time is in the past, return "false" in element [0]
         {
