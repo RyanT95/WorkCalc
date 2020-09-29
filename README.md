@@ -1,5 +1,8 @@
 # WorkCalc
-Simple console application to show when one should leave work based on their starting time and break length
+Simple console application to perform time-based calculations for work.
+
+* When one should leave work based on their starting time and break length, given an 8 hour working day.
+* How many hours (minus break) have been worked in the day, and other functions for time-sheets.
 
 ### Prerequisites
 
