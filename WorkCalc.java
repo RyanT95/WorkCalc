@@ -186,9 +186,72 @@ public class WorkCalc
         System.out.println("\n-----------------------------------------\n"
 						+ "         - Time spent working -"
 						+ "\n-----------------------------------------");
-						
-		// TODO: Calculate time spent working during the day (minus break)
+								
+		Scanner input = new Scanner(System.in);		// Open user input
 		
+		String startTime = "00:00";					// Time started work
+		int breakLength = 0;						// Length of lunch break
+		String endTime = "00:00";					// Time finished work
+		boolean tryAgain = true;					// Did the user make a bad input?
+	
+		// 
+		while (timeInMins(startTime) == 0 && timeInMins(endTime) == 0)
+		{	
+			try
+			{
+				System.out.print("\nWhat time did you start? (00:00) - ");
+				// User inputs time they started
+				startTime = input.nextLine();
+				
+				System.out.print("\nWhen did you finish (00:00) - ");
+				// User inputs when they finished
+				endTime = input.nextLine();
+	
+				System.out.print("\nHow long was your break? (minutes) - ");
+				// User inputs duration of break in minutes
+				breakLength = input.nextInt();
+	
+				// If user inputs negative number for break length
+				if (breakLength < 0)
+				{
+					System.out.print(errorMessage(2));
+	
+					tryAgain = true;
+					startTime = "00:00";                                    // Reset start time to "00:00"
+				}
+	
+			}
+			catch (NumberFormatException | InputMismatchException e)        // If user enters invalid input (letters)
+			{
+				System.out.print(errorMessage(3));
+	
+				tryAgain = true;
+				startTime = "00:00";                                        // Reset start time to "00:00"
+				input.nextLine();											// Clear the buffer, so the first "nextLine" at the top of loop isn't skipped
+				continue;													// Go to the next loop iteration
+			}
+			
+			// If input is good, set boolean to break out of loop
+			if (timeInMins(startTime) > 0)							
+			{
+				tryAgain = false;
+				continue;
+			}
+			
+			// Display error message informing user to try again if input is bad
+			if (tryAgain == true)											
+			{
+				System.out.print(errorMessage(1));
+			}
+			
+			input.nextLine();		// Clear the buffer, so the first "nextLine" at the top of loop isn't skipped
+
+		}
+		
+		// Close user input
+		input.close();
+		
+		// TODO: convert inTime and outTime to minutes. Calculate time between the two (minus break length), then convert back to a time string showing hours worked.
 	}
 	
     // *************************************************
@@ -287,8 +350,8 @@ public class WorkCalc
     // ****************************************
     public String[] timeLeft(String outTime)
     {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");                                       // Format the time object to HH:mm
-        LocalDateTime now = LocalDateTime.now();  															// Current time
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");                           // Format the time object to HH:mm
+        LocalDateTime now = LocalDateTime.now();  												// Current time
 
         float result = (timeInMins(outTime) - timeInMins(String.valueOf(dtf.format(now))));		// Input time minus current time
 
