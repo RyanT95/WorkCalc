@@ -1,5 +1,6 @@
 root = true
 
 # Change indent size for code viewer to 4 instead of GitHub's default of 8
+[*.java]
 indent_style = tab
 indent_size = 4
