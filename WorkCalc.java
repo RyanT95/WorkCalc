@@ -39,8 +39,8 @@ public class WorkCalc
 	{
 		// Display app title
         System.out.println("\n-----------------------------------------\n"
-                + "             Work Calculator"
-                + "\n-----------------------------------------");
+                		+ "             Work Calculator"
+                		+ "\n-----------------------------------------");
 		
 		Scanner menu = new Scanner(System.in);		// Open user input
 		
@@ -50,8 +50,7 @@ public class WorkCalc
 		// Main menu system
 		while (tryAgain == true)
 		{
-			System.out.println("1. Time you need to leave.\n" + "2. Time spent working today.\n");
-			System.out.print("\nPlease select an option - ");
+			System.out.println("1. Time you need to leave.\n" + "2. Time spent working today.\n" + "\nPlease select an option - ");
 			
 			menuOption = menu.nextInt();
 		
@@ -86,33 +85,30 @@ public class WorkCalc
 						+ "        - Time you should leave -"
 						+ "\n-----------------------------------------");
 				
+		UserInput ui = new UserInput();
 		Scanner input = new Scanner(System.in);		// Open user input
-		
-		final int SHIFT_LENGTH = 420; 				// Length of shift in minutes minus break
-		String startTime = "00:00";					// Time started work
-		int breakLength = 0;						// Length of lunch break
 		boolean tryAgain = true;					// Did the user make a bad input?
 	
 		// If method returns 0, an invalid input has been given
-		while (timeInMins(startTime) == 0)
+		while (timeInMins(ui.getStartTime()) == 0)
 		{	
 			try
 			{
 				System.out.print("\nWhat time did you start? (00:00) - ");
 				// User inputs time they started
-				startTime = input.nextLine();
+				ui.setStartTime(input.nextLine());
 	
 				System.out.print("\nHow long was your break? (minutes) - ");
 				// User inputs duration of break in minutes
-				breakLength = input.nextInt();
+				ui.setBreakLength(input.nextInt());
 	
 				// If user inputs negative number for break length
-				if (breakLength < 0)
+				if (ui.getBreakLength() < 0)
 				{
 					System.out.print(errorMessage(2));
 	
 					tryAgain = true;
-					startTime = "00:00";                                    // Reset start time to "00:00"
+					ui.setStartTime("00:00");                               // Reset start time to "00:00"
 				}
 	
 			}
@@ -121,13 +117,13 @@ public class WorkCalc
 				System.out.print(errorMessage(3));
 	
 				tryAgain = true;
-				startTime = "00:00";                                        // Reset start time to "00:00"
+				ui.setStartTime("00:00");									// Reset start time to "00:00"
 				input.nextLine();											// Clear the buffer, so the first "nextLine" at the top of loop isn't skipped
 				continue;													// Go to the next loop iteration
 			}
 			
 			// If input is good, set boolean to break out of loop
-			if (timeInMins(startTime) > 0)							
+			if (timeInMins(ui.getStartTime()) > 0)							
 			{
 				tryAgain = false;
 				continue;
@@ -143,7 +139,7 @@ public class WorkCalc
 
 		}
 	
-		float outTimeMinutes = timeInMins(startTime) + SHIFT_LENGTH + breakLength;    // Calculate time to leave in minutes
+		float outTimeMinutes = timeInMins(ui.getStartTime()) + ui.getShiftLength() + ui.getBreakLength();    // Calculate time to leave in minutes
 	
 		// Print time user should leave work in hours and minutes (00:00)
 		System.out.println("\n-----------------------------------------\n"
@@ -187,37 +183,34 @@ public class WorkCalc
 						+ "         - Time spent working -"
 						+ "\n-----------------------------------------");
 								
+		UserInput ui = new UserInput();
 		Scanner input = new Scanner(System.in);		// Open user input
-		
-		String startTime = "00:00";					// Time started work
-		int breakLength = 0;						// Length of lunch break
-		String endTime = "00:00";					// Time finished work
 		boolean tryAgain = true;					// Did the user make a bad input?
-	
+
 		// 
-		while (timeInMins(startTime) == 0 && timeInMins(endTime) == 0)
+		while (timeInMins(ui.getStartTime()) == 0 && timeInMins(ui.getEndTime()) == 0)
 		{	
 			try
 			{
 				System.out.print("\nWhat time did you start? (00:00) - ");
 				// User inputs time they started
-				startTime = input.nextLine();
+				ui.setStartTime(input.nextLine());
 				
 				System.out.print("\nWhen did you finish (00:00) - ");
 				// User inputs when they finished
-				endTime = input.nextLine();
+				ui.setEndTime(input.nextLine());
 	
 				System.out.print("\nHow long was your break? (minutes) - ");
 				// User inputs duration of break in minutes
-				breakLength = input.nextInt();
+				ui.setBreakLength(input.nextInt());
 	
 				// If user inputs negative number for break length
-				if (breakLength < 0)
+				if (ui.getBreakLength() < 0)
 				{
 					System.out.print(errorMessage(2));
 	
-					tryAgain = true;
-					startTime = "00:00";                                    // Reset start time to "00:00"
+					tryAgain = true;                  
+					ui.setStartTime("00:00");								// Reset start time to "00:00"
 				}
 	
 			}
@@ -226,13 +219,13 @@ public class WorkCalc
 				System.out.print(errorMessage(3));
 	
 				tryAgain = true;
-				startTime = "00:00";                                        // Reset start time to "00:00"
+				ui.setStartTime("00:00");									// Reset start time to "00:00"
 				input.nextLine();											// Clear the buffer, so the first "nextLine" at the top of loop isn't skipped
 				continue;													// Go to the next loop iteration
 			}
 			
 			// If input is good, set boolean to break out of loop
-			if (timeInMins(startTime) > 0)							
+			if (timeInMins(ui.getStartTime()) > 0)							
 			{
 				tryAgain = false;
 				continue;
@@ -250,6 +243,14 @@ public class WorkCalc
 		
 		// Close user input
 		input.close();
+
+		// Test user inputs
+		//-------------------------------------------------------------
+		System.out.println("Shift Length: " + ui.getShiftLength());
+		System.out.println("Start Time: " + ui.getStartTime());
+		System.out.println("Break Length: " + ui.getBreakLength());
+		System.out.println("End Time: " + ui.getEndTime());
+		//-------------------------------------------------------------
 		
 		// TODO: convert inTime and outTime to minutes. Calculate time between the two (minus break length), then convert back to a time string showing hours worked.
 	}
@@ -435,5 +436,52 @@ public class WorkCalc
 						+ "\n" + hyphens;
 		
 		return message;
+	}
+}
+
+// *********************
+// Data the user inputs 
+// *********************
+class UserInput
+{
+	private final int SHIFT_LENGTH = 420; 	// Length of shift in minutes minus break
+	private String startTime = "00:00";		// Time started work
+	private int breakLength = 0;			// Length of lunch break
+	private String endTime = "00:00";		// Time finished work
+
+	// Getters and setters so data is accessible across various functions without re-use of code
+	public int getShiftLength()
+	{
+		return SHIFT_LENGTH;
+	}
+
+	public String getStartTime()
+	{
+		return startTime;
+	}
+
+	public void setStartTime(String startTime)
+	{
+		this.startTime = startTime;
+	}
+
+	public int getBreakLength()
+	{
+		return breakLength;
+	}
+
+	public void setBreakLength(int breakLength)
+	{
+		this.breakLength = breakLength;
+	}
+
+	public String getEndTime()
+	{
+		return endTime;
+	}
+
+	public void setEndTime(String endTime)
+	{
+		this.endTime = endTime;
 	}
 }
